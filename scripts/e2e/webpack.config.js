@@ -16,7 +16,7 @@ module.exports = {
 
   resolve: {
     extensions: ["", ".js", ".json"],
-    mainFields: ["module", "browser"]
+    mainFields: ["module", "main", "browser"]
   },
 
   module: {

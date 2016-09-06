@@ -6,7 +6,7 @@ import { Gesture } from '../../gestures/gesture';
 import { CSS } from '../../util/dom';
 import { debounce, defaults, isTrueProperty, isPresent } from '../../util/util';
 import { Ion } from '../ion';
-import { Swiper } from './swiper-widget';
+import * as Swiper from 'swiper';
 
 
 /**
@@ -217,7 +217,7 @@ export class Slides extends Ion {
   /**
    * @private
    */
-  slider: Swiper;
+  slider: any;
 
   /**
    * @private
@@ -350,7 +350,8 @@ export class Slides extends Ion {
     let paginationId = '.' + this.slideId + ' .swiper-pagination';
 
     var options = defaults({
-      pagination: paginationId
+      pagination: paginationId,
+      runCallbacksOnInit: false
     }, this.options);
 
     options.onTap = (swiper: any, e: any) => {

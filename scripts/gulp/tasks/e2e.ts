@@ -100,9 +100,10 @@ task(E2E_INTERNAL_COMPILE_TESTS, (done: Function) => {
 });
 
 function buildE2ETests(folderInfo: any, done: Function) {
-  let includeGlob = ['./components/*/test/*/app-module.ts', './components/*/test/*/entry.ts'];
+  let includeGlob = ['./declarations.d.ts', './components/*/test/*/app-module.ts', './components/*/test/*/entry.ts'];
   if (folderInfo.componentName && folderInfo.componentTest) {
     includeGlob = [
+      './declarations.d.ts',
       `./components/${folderInfo.componentName}/test/${folderInfo.componentTest}/app-module.ts`,
       `./components/${folderInfo.componentName}/test/${folderInfo.componentTest}/entry.ts`,
     ];
