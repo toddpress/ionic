@@ -25,11 +25,6 @@ export class Storage {
   _db: any;
 
   constructor(public config: Config) {
-
-    console.log('Got config', config);
-
-    console.log(LocalForage);
-
     // TODO: Remove this once we figure out our proper build
     if(LocalForage.default) {
       this._db = LocalForage.default;
@@ -43,7 +38,7 @@ export class Storage {
     });
 
     this._db.setDriver([
-      //CordovaSQLiteDriver._driver,
+      CordovaSQLiteDriver._driver,
       this._db.INDEXEDDB,
       this._db.WEBSQL,
       this._db.LOCALSTORAGE
