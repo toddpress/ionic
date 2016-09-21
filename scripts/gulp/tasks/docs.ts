@@ -11,8 +11,9 @@ import { argv } from 'yargs';
 
 import { DEMOS_ROOT } from '../constants';
 
+task('docs', ['docs.dgeni', 'docs.copyDemos', 'docs.sassVariables']);
 
-task('docs', () => {
+task('docs.dgeni', () => {
   const docVersion = argv['doc-version'] || 'nightly';
   const initialVersionBuild = argv['initial-build'] || false;
   if (docVersion !== 'nightly' && ! valid(docVersion)) {
@@ -29,7 +30,7 @@ task('docs', () => {
   }
 });
 
-task('docs.copyDemos', ['demos.build'], (done: Function) => {
+task('docs.demos', ['demos.build'], (done: Function) => {
   const config = require('../../config.json');
   const outputDir = join(config.docsDest, 'demos');
   let promises = [];
