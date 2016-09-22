@@ -12,13 +12,7 @@
   "module": "index.js",
   "dependencies": {
     "@angular/common": "",
-    "@angular/compiler": "",
-    "@angular/core": "",
-    "@angular/forms": "",
-    "@angular/http": "",
-    "@angular/platform-browser": "",
-    "@angular/platform-browser-dynamic": "",
-    "@angular/platform-server": "",
-    "rxjs": ""
+    "localforage": "^1.4.2",
+    "localforage-cordovasqlitedriver": "^1.4.1"
   }
 }

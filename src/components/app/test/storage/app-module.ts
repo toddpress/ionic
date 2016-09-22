@@ -3,49 +3,42 @@ import { IonicApp, IonicModule, Storage, LocalStorage, SqlStorage } from '../../
 
 
 @Component({
-  templateUrl: 'main.html'
+  templateUrl: 'main.html',
+  providers: [Storage]
 })
-export class E2EApp {
-  local: Storage;
-  sql: Storage;
-
-  constructor() {
-    this.local = new Storage(LocalStorage);
-    this.sql = new Storage(SqlStorage);
+class E2EApp {
+  constructor(public storage: Storage) {
   }
 
-  getLocal() {
-    this.local.get('name').then(value => {
+  getItem() {
+    this.storage.get('name').then(value => {
       alert('Your name is: ' + value);
     });
   }
 
-  setLocal() {
+  setItem() {
     let name = prompt('Your name?');
 
-    this.local.set('name', name);
+    this.storage.set('name', name);
   }
 
-  removeLocal() {
-    this.local.remove('name');
+  removeItem() {
+    this.storage.remove('name');
   }
-
-  getSql() {
-    this.sql.get('name').then(value => {
-      alert('Your name is: ' + value);
-    }, (errResult) => {
-      console.error('Unable to get item from SQL db:', errResult);
+  keys() {
+    this.storage.keys().then(keys => {
+      console.log('KEYS', keys);
     });
   }
-
-  setSql() {
-    let name = prompt('Your name?');
-
-    this.sql.set('name', name);
+  length() {
+    this.storage.length().then(len => {
+      console.log('KEYS', len);
+    })
   }
-
-  removeSql() {
-    this.sql.remove('name');
+  forEach() {
+    this.storage.forEach((value, key, index) => {
+      console.log('ITER', value, key, index);
+    })
   }
 }
 
