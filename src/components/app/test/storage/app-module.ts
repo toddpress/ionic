@@ -1,12 +1,12 @@
 import { Component, NgModule } from '@angular/core';
-import { IonicApp, IonicModule, Storage, LocalStorage, SqlStorage } from '../../../..';
+import { IonicApp, IonicModule, Storage } from '../../../..';
 
 
 @Component({
   templateUrl: 'main.html',
   providers: [Storage]
 })
-class E2EApp {
+export class E2EApp {
   constructor(public storage: Storage) {
   }
 

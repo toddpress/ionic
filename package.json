@@ -47,6 +47,7 @@
     "@types/gulp-watch": "4.1.29",
     "@types/hammerjs": "2.0.33",
     "@types/jasmine": "2.2.34",
+    "@types/localforage": "0.0.30",
     "@types/lodash": "4.14.35",
     "@types/merge2": "0.3.29",
     "@types/mkdirp": "0.3.29",
