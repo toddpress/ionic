@@ -1,85 +1,105 @@
+import { Injectable } from '@angular/core';
+
+import * as LocalForage from 'localforage';
+
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+import { Config } from '../config/config';
+
 /**
  * Storage is an easy way to store key/value pairs and other complicated
- * data in a way that uses a variety of storage engines underneath.
+ * data in a way that uses a variety of storage engines underneath. Currently,
+ * Storage uses localforage underneath to abstract away the various storage
+ * engines while still providing a simple API.
  *
- * For most cases, we recommend the SqlStorage system as it will store
- * data in a file in the app's sandbox. LocalStorage should ONLY be used
- * for temporary data as it may be 'cleaned up' by the operation system
- * during low disk space situations.
+ * When running natively, Storage will prioritize using SQLite, as it's one of
+ * the most stable and widely used file-based databases, and avoids some of the
+ * pitfalls of things like localstorage that the OS can decide to clear out in
+ * low disk-space situations.
+ *
+ * When running in the web or as a Progressive Web App, Storage will attempt to use
+ * IndexedDB, WebSQL, and localstorage, in that order.
  */
-/**
- * @private
-*/
+@Injectable()
 export class Storage {
-  private _strategy: StorageEngine;
+  _db: any;
 
-  constructor(strategyCls: IStorageEngine, options?: any) {
-    this._strategy = new strategyCls(options);
-  }
-
-  get(key: string): Promise<any> {
-    return this._strategy.get(key);
-  }
-
-  getJson(key: string): Promise<any> {
-    return this.get(key).then(value => {
-      try {
-        return JSON.parse(value);
-      } catch (e) {
-        console.warn('Storage getJson(): unable to parse value for key', key, ' as JSON');
-        throw e; // rethrowing exception so it can be handled with .catch()
-      }
-    });
-  }
-
-  setJson(key: string, value: any): Promise<any> {
-    try {
-      return this.set(key, JSON.stringify(value));
-    } catch (e) {
-      return Promise.reject(e);
+  constructor(public config: Config) {
+    // TODO: Remove this once we figure out our proper build
+    if(LocalForage.default) {
+      this._db = LocalForage.default;
+    } else {
+      this._db = LocalForage;
     }
+
+    this._db.config({
+      name        : '_ionicstorage',
+      storeName   : '_ionickv'
+    });
+
+    this._db.setDriver([
+      CordovaSQLiteDriver._driver,
+      this._db.INDEXEDDB,
+      this._db.WEBSQL,
+      this._db.LOCALSTORAGE
+    ])
   }
 
-  set(key: string, value: any) {
-    return this._strategy.set(key, value);
-  }
-
-  remove(key: string) {
-    return this._strategy.remove(key);
-  }
-
-  query(query: string, params?: any) {
-    return this._strategy.query(query, params);
-  }
-
-  clear() {
-    return this._strategy.clear();
-  }
-}
-
-export interface IStorageEngine {
-  new (options: any): StorageEngine;
-}
-
-/**
- * @private
-*/
-export class StorageEngine {
-  constructor(options = {}) { }
-
+  /**
+   * Get the value assocated with the given key.
+   * @return Promise that resolves with the value
+   */
   get(key: string): Promise<any> {
-    throw Error('get() not implemented for this storage engine');
+    return this._db.getItem(key);
   }
-  set(key: string, value: any): Promise<any> {
-    throw Error('set() not implemented for this storage engine');
+
+  /**
+   * Set the value for the given key.
+   * @param key the key to identify this value
+   * @param value the value for this key
+   * @return Promise that resolves when the value is set
+   */
+  set(key: string, value: any) {
+    return this._db.setItem(key, value);
   }
-  remove(key: string): Promise<any> {
-    throw Error('remove() not implemented for this storage engine');
+
+  /**
+   * Remove any value associated with this key.
+   * @param key the key to identify this value
+   * @return Promise that resolves when the value is removed
+   */
+  remove(key: string) {
+    return this._db.removeItem(key);
   }
-  query(query: string, params?: any): Promise<any> {
-    throw Error('query() not implemented for this storage engine');
+
+  /**
+   * Clear the entire key value store. WARNING: HOT!
+   * @return Promise that resolves when the kv store is cleared
+   */
+  clear() {
+    return this._db.clear();
   }
-  clear(): Promise<any> {
-    throw Error('clear() not implemented for this storage engine');
+
+  /**
+   * @return the number of keys stored.
+   */
+  length() {
+    return this._db.length();
   }
+
+  /**
+   * @return the keys in the store.
+   */
+  keys() {
+    return this._db.keys();
+  }
+
+  /**
+   * Iterate through each key,value pair.
+   * @param iteratorCallback a callback of the form (value, key, iterationNumber)
+   */
+  forEach(iteratorCallback: (value: any, key: string, iterationNumber: Number) => any) {
+    return this._db.iterate(iteratorCallback);
+  }
+
 }

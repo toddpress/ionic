@@ -1,11 +1,9 @@
 <ion-content padding>
-  <h2>Local Storage</h2>
-  <button ion-button primary (click)="getLocal()">Get</button>
-  <button ion-button primary (click)="setLocal()">Set</button>
-  <button ion-button primary (click)="removeLocal()">Remove</button>
-
-  <h2>SQL Storage</h2>
-  <button ion-button primary (click)="getSql()">Get</button>
-  <button ion-button primary (click)="setSql()">Set</button>
-  <button ion-button primary (click)="removeSql()">Remove</button>
+  <h2>Storage</h2>
+  <button primary (click)="getItem()">Get</button>
+  <button primary (click)="setItem()">Set</button>
+  <button primary (click)="removeItem()">Remove</button>
+  <button primary (click)="length()">Length</button>
+  <button primary (click)="keys()">Keys</button>
+  <button primary (click)="forEach()">For Each</button>
 </ion-content>
