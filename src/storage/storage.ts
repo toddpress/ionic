@@ -6,7 +6,9 @@ import * as LocalForage from 'localforage';
 
 //declare var LocalForage;
 
-//import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+
+console.log('Loaded CordovaSQLiteDriver', CordovaSQLiteDriver);
 
 import { Config } from '../config/config';
 
@@ -41,8 +43,10 @@ export class Storage {
       storeName   : '_ionickv'
     });
 
+    var sqliteDriver = CordovaSQLiteDriver['default'];
+
     this._db.setDriver([
-      //CordovaSQLiteDriver._driver,
+      sqliteDriver._driver,
       this._db.INDEXEDDB,
       this._db.WEBSQL,
       this._db.LOCALSTORAGE
