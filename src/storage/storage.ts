@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 
 //import LocalForage = require('localforage');
 //import * as LocalForage from 'localforage';
-import * as LocalForage from 'localforage';
+//import * as LocalForage from 'localforage';
 
 //declare var LocalForage;
 
-import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
+//import * as CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 
-console.log('Loaded CordovaSQLiteDriver', CordovaSQLiteDriver);
+//console.log('Loaded CordovaSQLiteDriver', CordovaSQLiteDriver);
 
 import { Config } from '../config/config';
 
@@ -32,6 +32,7 @@ export class Storage {
 
   constructor(public config: Config) {
     // TODO: Remove this once we figure out our proper build
+    /*
     if(LocalForage['default']) {
       this._db = LocalForage['default'];
     } else {
@@ -51,6 +52,7 @@ export class Storage {
       this._db.WEBSQL,
       this._db.LOCALSTORAGE
     ])
+    */
   }
 
   /**

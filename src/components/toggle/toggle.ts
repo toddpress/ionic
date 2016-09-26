@@ -7,6 +7,7 @@ import { isTrueProperty } from '../../util/util';
 import { Ion } from '../ion';
 import { Item } from '../item/item';
 import { pointerCoord } from '../../util/dom';
+import { Haptic } from '../../util/haptic';
 import { UIEventManager } from '../../util/ui-event-manager';
 
 export const TOGGLE_VALUE_ACCESSOR: any = {
@@ -124,6 +125,7 @@ export class Toggle extends Ion implements AfterContentInit, ControlValueAccesso
     config: Config,
     elementRef: ElementRef,
     renderer: Renderer,
+    public _haptic: Haptic,
     @Optional() public _item: Item
   ) {
     super(config, elementRef, renderer);
@@ -263,6 +265,9 @@ export class Toggle extends Ion implements AfterContentInit, ControlValueAccesso
     console.debug('toggle, onChange (no ngModel)', isChecked);
     this._setChecked(isChecked);
     this.onTouched();
+
+    // Create a haptic event
+    this._haptic.selection();
   }
 
   /**
